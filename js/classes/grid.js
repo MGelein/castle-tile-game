@@ -1,5 +1,6 @@
 const TILE_SIZE = 64;
 const OVERLAY_COLOR = '#eee';
+const DRAW_COORDS = false;
 
 class Grid {
     offset = new Coord(0, 0);
@@ -23,11 +24,13 @@ class Grid {
     drawTiles() {
         push();
         translate(this.offset.x, this.offset.y);
-        for (let row = this.minColVisible; row <= this.maxColVisible; row++) {
+        for (let row = this.minRowVisible; row <= this.maxRowVisible; row++) {
             for (let col = this.minColVisible; col <= this.maxColVisible; col++) {
                 push();
                 translate(col * TILE_SIZE, row * TILE_SIZE);
-                map.get(col, row)?.draw?.();
+                const tile = map.get(col, row);
+                if (tile && tile.draw) tile.draw();
+                else if (DRAW_COORDS) text(`(${col};${row})`, 8, 16);
                 pop();
             }
         }

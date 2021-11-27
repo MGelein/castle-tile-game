@@ -9,12 +9,13 @@ function setup() {
     noSmooth();
     frameRate(60);
 
-    sheet = new Sheet('./data/spritesheet.png', 16);
+    for (let i = -50; i < 50; i++) {
+        for (let j = -50; j < 50; j++) {
+            map.set(i, j, new Tile(0, (i % 4) * 0.25));
+        }
+    }
 
-    map.set(0, 0, new Tile(0));
-    map.set(0, 1, new Tile(1));
-    map.set(1, 1, new Tile(1, 0.5));
-    map.set(1, 0, new Tile(1, 0.25));
+    sheet = new Sheet('./data/spritesheet.png', 16);
 }
 
 function draw() {
