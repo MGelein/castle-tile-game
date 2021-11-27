@@ -22,3 +22,9 @@ body {
 .p5Canvas {
     width: 100%;
 }
+
+main {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}

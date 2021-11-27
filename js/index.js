@@ -11,7 +11,7 @@ function setup() {
 
     for (let i = -50; i < 50; i++) {
         for (let j = -50; j < 50; j++) {
-            map.set(i, j, new Tile(0, (i % 4) * 0.25));
+            map.set(i, j, new Tile(Math.floor(random(0, 34)), (i % 4) * 0.25));
         }
     }
 
@@ -28,5 +28,9 @@ function windowResized() {
 }
 
 function touchMoved(e) {
-    grid.addMoveEvent(e);
+    grid.addMoveEvent(e.touches?.[0] || e);
+}
+
+function touchEnded() {
+    grid.lastMoved = null;
 }

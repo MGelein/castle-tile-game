@@ -3,8 +3,10 @@ const OVERLAY_COLOR = '#eee';
 const DRAW_COORDS = false;
 
 class Grid {
+    targetOffset = new Coord(0, 0);
     offset = new Coord(0, 0);
     offsetMoved = new Coord(0, 0);
+    lastMoved = null;
 
     minRowVisible = 0;
     rowsVisible = 0;
@@ -38,8 +40,11 @@ class Grid {
     }
 
     updateOffset() {
-        this.offset.addCoord(this.offsetMoved);
+        this.targetOffset.addCoord(this.offsetMoved);
         this.offsetMoved.set(0, 0);
+
+        this.offset.x += (this.targetOffset.x - this.offset.x) * 0.1;
+        this.offset.y += (this.targetOffset.y - this.offset.y) * 0.1;
     }
 
     drawOverlay() {
@@ -89,9 +94,17 @@ class Grid {
         return Math.ceil(windowWidth / TILE_SIZE);
     }
 
-    addMoveEvent({ movementX, movementY }) {
-        this.offsetMoved.x += movementX;
-        this.offsetMoved.y += movementY;
+    addMoveEvent(e) {
+        if (this.lastMoved !== null) {
+            const movementX = e.clientX - this.lastMoved.x;
+            const movementY = e.clientY - this.lastMoved.y;
+
+            this.offsetMoved.x += movementX;
+            this.offsetMoved.y += movementY;
+            this.lastMoved.set(e.clientX, e.clientY);
+        } else {
+            this.lastMoved = new Coord(e.clientX, e.clientY);
+        }
     }
 }
 
