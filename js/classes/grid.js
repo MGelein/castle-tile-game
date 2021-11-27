@@ -1,4 +1,4 @@
-const TILE_SIZE = 32;
+const TILE_SIZE = 64;
 const OVERLAY_COLOR = '#eee';
 
 class Grid {
@@ -13,14 +13,25 @@ class Grid {
     colsVisible = 0;
     maxColVisible = 0;
 
-    constructor() {
-        this.calcVisible();
-    }
-
     draw() {
         this.updateOffset();
         this.calcVisible();
+        this.drawTiles();
         this.drawOverlay();
+    }
+
+    drawTiles() {
+        push();
+        translate(this.offset.x, this.offset.y);
+        for (let row = this.minColVisible; row <= this.maxColVisible; row++) {
+            for (let col = this.minColVisible; col <= this.maxColVisible; col++) {
+                push();
+                translate(col * TILE_SIZE, row * TILE_SIZE);
+                map.get(col, row)?.draw?.();
+                pop();
+            }
+        }
+        pop();
     }
 
     updateOffset() {
@@ -31,6 +42,7 @@ class Grid {
     drawOverlay() {
         push();
         translate(this.offset.x % TILE_SIZE, this.offset.y % TILE_SIZE);
+
         stroke(OVERLAY_COLOR);
         const left = -TILE_SIZE;
         const right = windowWidth + TILE_SIZE
@@ -44,6 +56,7 @@ class Grid {
             const lineX = col * TILE_SIZE;
             line(lineX, top, lineX, bottom);
         }
+
         pop();
     }
 

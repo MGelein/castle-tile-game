@@ -2,6 +2,8 @@ function setup() {
     pixelDensity(1);
     createCanvas(windowWidth, windowHeight);
     frameRate(60);
+
+    map.set(0, 0, new Tile());
 }
 
 function draw() {
