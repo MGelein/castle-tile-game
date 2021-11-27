@@ -3,6 +3,7 @@ const OVERLAY_COLOR = '#eee';
 
 class Grid {
     offset = new Coord(0, 0);
+    offsetMoved = new Coord(0, 0);
 
     minRowVisible = 0;
     rowsVisible = 0;
@@ -13,12 +14,18 @@ class Grid {
     maxColVisible = 0;
 
     constructor() {
-
+        this.calcVisible();
     }
 
     draw() {
+        this.updateOffset();
         this.calcVisible();
         this.drawOverlay();
+    }
+
+    updateOffset() {
+        this.offset.addCoord(this.offsetMoved);
+        this.offsetMoved.set(0, 0);
     }
 
     drawOverlay() {
@@ -64,6 +71,11 @@ class Grid {
 
     calcColsVisible() {
         return Math.ceil(windowWidth / TILE_SIZE);
+    }
+
+    addMoveEvent({ movementX, movementY }) {
+        this.offsetMoved.x += movementX;
+        this.offsetMoved.y += movementY;
     }
 }
 

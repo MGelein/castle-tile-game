@@ -3,7 +3,20 @@ class Coord {
     y = 0;
 
     constructor(x, y) {
+        this.set(x, y);
+    }
+
+    set(x, y) {
         this.x = x;
         this.y = y;
+    }
+
+    addCoord({ x, y }) {
+        this.add(x, y);
+    }
+
+    add(x, y) {
+        this.x += x;;
+        this.y += y;
     }
 }

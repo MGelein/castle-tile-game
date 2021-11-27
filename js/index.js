@@ -12,3 +12,7 @@ function draw() {
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
+
+function touchMoved(e) {
+    grid.addMoveEvent(e);
+}
