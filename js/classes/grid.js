@@ -16,8 +16,8 @@ class Grid {
     draw() {
         this.updateOffset();
         this.calcVisible();
-        this.drawTiles();
         this.drawOverlay();
+        this.drawTiles();
     }
 
     drawTiles() {
