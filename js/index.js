@@ -5,7 +5,8 @@ function setup() {
 }
 
 function draw() {
-
+    clear();
+    grid.draw();
 }
 
 function windowResized() {
