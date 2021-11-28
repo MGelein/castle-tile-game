@@ -1,4 +1,5 @@
 class Button {
+    parentPos = new Coord(0, 0);
     iconIndex;
     x;
     y;
@@ -60,8 +61,8 @@ class Button {
 
     inBounds() {
         const { x, y, w, h } = this.calcSize();
-        const mx = mouseX - this.x;
-        const my = mouseY - this.y;
+        const mx = mouseX - this.x - this.parentPos.x;
+        const my = mouseY - this.y - this.parentPos.y;
         return mx > x && mx < x + w && my > y && my < y + h;
     }
 }

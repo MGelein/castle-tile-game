@@ -1,0 +1,3 @@
+const OVERLAY_COLOR = '#EEE';
+const UI_BORDER_COLOR = '#FEAE34';
+const UI_PANEL_COLOR = '#FEAE3466';

@@ -18,18 +18,22 @@ class UI {
             this.font = font;
         });
 
-        const testButton = new Button(PUT_ICON, 100, 100);
+
+        const testPanel = new Panel(200);
+        this.addComponent(testPanel);
+
+        const testButton = new Button(PUT_ICON, 0, 0);
         testButton.onClick = () => {
             console.log("test clicky");
         }
-        this.addButton(testButton);
+        testPanel.addComponent(testButton);
     }
 
-    addButton(button) {
+    addComponent(button) {
         this.components.add(button);
     }
 
-    removeButton(button) {
+    removeComponent(button) {
         this.components.remove(button);
     }
 
@@ -39,13 +43,24 @@ class UI {
     }
 
     handleClick() {
-        for (let { hover, onClick } of this.components.list) {
-            if (hover) {
-                onClick?.();
+        for (let component of this.components.list) {
+            if (component.components) {
+                for (let subcomponent of component.components.list) {
+                    if (subcomponent.hover) {
+                        subcomponent.onClick?.();
+                        return true;
+                    }
+                }
+            } else if (component.hover) {
+                component.onClick?.();
                 return true;
             }
         }
         return false;
+    }
+
+    onResize() {
+        for (let component of this.components.list) component.onResize?.();
     }
 }
 

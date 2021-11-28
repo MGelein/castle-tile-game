@@ -1,6 +1,6 @@
 const TILE_SIZE = 96;
-const OVERLAY_COLOR = '#eee';
 const DRAW_COORDS = false;
+const STROKE_WIDTH = 2;
 
 class Grid {
     targetOffset = new Coord(0, 0);
@@ -51,6 +51,7 @@ class Grid {
         push();
         translate(this.offset.x % TILE_SIZE, this.offset.y % TILE_SIZE);
 
+        strokeWeight(STROKE_WIDTH);
         stroke(OVERLAY_COLOR);
         const left = -TILE_SIZE;
         const right = windowWidth + TILE_SIZE
