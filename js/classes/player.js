@@ -1,5 +1,6 @@
 class Player {
     name;
+    currentTile;
 
     constructor(name) {
         this.setName(name);
@@ -7,5 +8,10 @@ class Player {
 
     setName(name) {
         this.name = name;
+    }
+
+    drawTile() {
+        this.currentTile = deck.randomTile();
+        console.log(`${this.name} drew a tile: ${this.currentTile}`);
     }
 }

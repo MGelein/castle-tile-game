@@ -60,6 +60,7 @@ class Button {
     }
 
     inBounds() {
+        if (this.visible === false) return false;
         const { x, y, w, h } = this.calcSize();
         const mx = mouseX - this.x - this.parentPos.x;
         const my = mouseY - this.y - this.parentPos.y;

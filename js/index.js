@@ -16,8 +16,6 @@ function setup() {
 }
 
 function draw() {
-    game.update();
-
     clear();
     grid.draw();
     ui.draw();
@@ -38,4 +36,5 @@ function touchMoved(e) {
 
 function touchEnded() {
     grid.stopDrag();
+    ui.handleRelease();
 }

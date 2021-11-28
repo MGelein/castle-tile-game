@@ -17,20 +17,14 @@ class Game {
         this.localPlayer = localPlayer;
     }
 
-    update() {
-        switch (this.state) {
-            case PLAYING:
-
-                break;
-            case DONE:
-            case WAITING:
-            default:
-                break;
-        }
-    }
-
     nextPlayer() {
-        console.log("NEXT");
+        if (!deck.hasTiles()) {
+            this.state = DONE;
+            this.activePlayer = null;
+            this.hasLocalControl = false;
+            return;
+        }
+
         let activePlayerIndex = this.players.indexOf(this.activePlayer);
         activePlayerIndex++;
 
@@ -41,6 +35,7 @@ class Game {
 
         this.activePlayer = this.players[activePlayerIndex];
         this.hasLocalControl = this.activePlayer === this.localPlayer;
+        if (this.hasLocalControl) this.activePlayer.drawTile();
     }
 
     start(...players) {
@@ -52,6 +47,7 @@ class Game {
         this.round = 0;
         this.activePlayer = this.players[0];
         this.hasLocalControl = this.activePlayer === this.localPlayer;
+        if (this.hasLocalControl) this.activePlayer.drawTile();
     }
 }
 
