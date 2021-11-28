@@ -19,6 +19,9 @@ class UI {
         });
 
         const testButton = new Button(PUT_ICON, 100, 100);
+        testButton.onClick = () => {
+            console.log("test clicky");
+        }
         this.addButton(testButton);
     }
 
@@ -33,6 +36,16 @@ class UI {
     draw() {
         this.components.update();
         for (let component of this.components.list) component.draw();
+    }
+
+    handleClick() {
+        for (let { hover, onClick } of this.components.list) {
+            if (hover) {
+                onClick?.();
+                return true;
+            }
+        }
+        return false;
     }
 }
 

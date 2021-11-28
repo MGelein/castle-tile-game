@@ -26,10 +26,14 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
 
+function touchStarted(e) {
+    if (!ui.handleClick()) grid.startDrag(e.touches?.[0] || e)
+}
+
 function touchMoved(e) {
     grid.addMoveEvent(e.touches?.[0] || e);
 }
 
 function touchEnded() {
-    grid.lastMoved = null;
+    grid.stopDrag();
 }

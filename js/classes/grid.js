@@ -102,9 +102,15 @@ class Grid {
             this.offsetMoved.x += movementX;
             this.offsetMoved.y += movementY;
             this.lastMoved.set(e.clientX, e.clientY);
-        } else {
-            this.lastMoved = new Coord(e.clientX, e.clientY);
         }
+    }
+
+    startDrag(e) {
+        this.lastMoved = new Coord(e.clientX, e.clientY);
+    }
+
+    stopDrag() {
+        this.lastMoved = null;
     }
 }
 

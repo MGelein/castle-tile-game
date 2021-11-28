@@ -3,20 +3,23 @@ class Button {
     x;
     y;
 
+    hover = false;
     baseSize = 0;
     targetScale = 1;
     scale = 1;
     shadowOffset = 0;
     targetShadowOffset = 0;
     baseShadowOffset = 0;
+    onClick
 
-    constructor(iconIndex, x, y) {
+    constructor(iconIndex, x, y, onClick) {
         this.iconIndex = iconIndex;
         this.x = x;
         this.y = y;
         this.baseSize = TILE_SIZE;
         this.baseShadowOffset = this.baseSize * 0.0675;
         this.shadowOffset = this.targetShadowOffset = this.baseShadowOffset;
+        this.onClick = onClick;
     }
 
     draw() {
@@ -44,7 +47,8 @@ class Button {
     }
 
     handleInteraction() {
-        if (this.inBounds()) {
+        this.hover = this.inBounds();
+        if (this.hover) {
             this.targetScale = mouseIsPressed ? 0.9 : 1.1;
             this.targetShadowOffset = mouseIsPressed ? this.baseShadowOffset / 2 : this.baseShadowOffset * 1.2;
         } else {
