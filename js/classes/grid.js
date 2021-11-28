@@ -1,5 +1,5 @@
 const TILE_SIZE = 96;
-const DRAW_COORDS = false;
+const DRAW_COORDS = true;
 const STROKE_WIDTH = 2;
 
 class Grid {

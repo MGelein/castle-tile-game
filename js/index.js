@@ -8,6 +8,13 @@ function setup() {
 
     sheet = new Sheet('./data/spritesheet.png', 16);
     ui = new UI('./data/PressStart2P-Regular.ttf');
+
+    deck.shuffle();
+    let counter = 0;
+    while (deck.hasTiles()) {
+        map.set(counter, 0, new Tile(deck.randomTile()));
+        counter++;
+    }
 }
 
 function draw() {
