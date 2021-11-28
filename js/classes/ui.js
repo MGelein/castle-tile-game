@@ -42,12 +42,12 @@ class UI {
         for (let component of this.components.list) {
             if (component.components) {
                 for (let subcomponent of component.components.list) {
-                    if (subcomponent.hover && subcomponent.visible !== false) {
+                    if (subcomponent.inBounds?.() && subcomponent.visible !== false) {
                         subcomponent.onClick?.();
                         return true;
                     }
                 }
-            } else if (component.hover && component.visible !== false) {
+            } else if (component.inBounds?.() && component.visible !== false) {
                 component.onClick?.();
                 return true;
             }
@@ -89,10 +89,12 @@ class UI {
 
         const rotateCCWButton = new Button(CCW_ICON, TILE_SIZE * 1.5, TILE_SIZE / 3);
         rotateCCWButton.visibleRule = placeButton.visibleRule;
+        rotateCCWButton.onClick = () => game.activePlayer?.currentTile?.rotateCCW?.();
         panel.addComponent(rotateCCWButton);
 
         const rotateCWButton = new Button(CW_ICON, TILE_SIZE * 2.5, TILE_SIZE / 3);
         rotateCWButton.visibleRule = placeButton.visibleRule;
+        rotateCWButton.onClick = () => game.activePlayer?.currentTile?.rotateCW?.();
         panel.addComponent(rotateCWButton);
     }
 }

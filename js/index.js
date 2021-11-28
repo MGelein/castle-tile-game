@@ -1,4 +1,6 @@
 let sheet;
+let clicked = false;
+let clickDebounce = 200;
 
 function setup() {
     pixelDensity(1);
@@ -19,6 +21,7 @@ function draw() {
     clear();
     grid.draw();
     ui.draw();
+    game.update();
 }
 
 function windowResized() {
@@ -27,7 +30,11 @@ function windowResized() {
 }
 
 function touchStarted(e) {
-    if (!ui.handleClick()) grid.startDrag(e.touches?.[0] || e)
+    if (!clicked) {
+        clicked = true;
+        if (!ui.handleClick()) grid.startDrag(e.touches?.[0] || e)
+        setTimeout(() => clicked = false, clickDebounce);
+    }
 }
 
 function touchMoved(e) {

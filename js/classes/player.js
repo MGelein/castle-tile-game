@@ -11,7 +11,12 @@ class Player {
     }
 
     drawTile() {
-        this.currentTile = deck.randomTile();
-        console.log(`${this.name} drew a tile: ${this.currentTile}`);
+        const tileIndex = deck.randomTile();
+        console.log(`${this.name} drew a tile: ${tileIndex}`);
+        this.currentTile = new HoverTile(tileIndex);
+    }
+
+    update() {
+        this.currentTile?.draw();
     }
 }

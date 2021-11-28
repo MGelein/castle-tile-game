@@ -17,6 +17,10 @@ class Game {
         this.localPlayer = localPlayer;
     }
 
+    update() {
+        if (game.activePlayer) game.activePlayer.update();
+    }
+
     nextPlayer() {
         if (!deck.hasTiles()) {
             this.state = DONE;
