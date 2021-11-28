@@ -19,13 +19,14 @@ class UI {
         });
 
 
-        const testPanel = new Panel(200);
+        const testPanel = new Panel(300);
         this.addComponent(testPanel);
 
-        const testButton = new Button(PUT_ICON, 0, 0);
+        const testButton = new Button(PUT_ICON, TILE_SIZE / 2, TILE_SIZE / 3);
         testButton.onClick = () => {
-            console.log("test clicky");
+            game.nextPlayer();
         }
+        testButton.visibleRule = () => game.hasLocalControl;
         testPanel.addComponent(testButton);
     }
 
@@ -39,7 +40,11 @@ class UI {
 
     draw() {
         this.components.update();
-        for (let component of this.components.list) component.draw();
+        for (let component of this.components.list) {
+            component.visible = component.visibleRule?.();
+            if (component.visible === false) continue;
+            component.draw();
+        }
     }
 
     handleClick() {

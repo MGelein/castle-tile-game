@@ -42,7 +42,11 @@ class Panel {
 
         translate(this.padding, this.padding);
 
-        for (let component of this.components.list) component.draw?.();
+        for (let component of this.components.list) {
+            component.visible = component.visibleRule?.();
+            if (component.visible === false) continue;
+            component.draw?.();
+        }
         pop();
 
         this.components.update();
@@ -59,7 +63,7 @@ class Panel {
                 this.pos.y = this.margin;
                 break;
             case 'center':
-                this.pos.y = (windowHeight / 2) - this.height / 2 - this.padding;
+                this.pos.y = (windowHeight / 2) - this.height / 2;
             default:
                 break;
         }
@@ -72,7 +76,7 @@ class Panel {
                 this.pos.x = windowWidth - this.margin - this.width - this.padding;
                 break;
             case 'center':
-                this.pos.x = windowWidth / 2 - this.padding - this.width / 2;
+                this.pos.x = windowWidth / 2 - this.width / 2;
             default:
                 break;
         }

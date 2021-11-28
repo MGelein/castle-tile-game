@@ -9,15 +9,15 @@ function setup() {
     sheet = new Sheet('./data/spritesheet.png', 16);
     ui = new UI('./data/PressStart2P-Regular.ttf');
 
-    deck.shuffle();
-    let counter = 0;
-    while (deck.hasTiles()) {
-        map.set(counter, 0, new Tile(deck.randomTile()));
-        counter++;
-    }
+    player = new Player("trb1914");
+    playerB = new Player("kers");
+    game = new Game(player);
+    game.start(player, playerB);
 }
 
 function draw() {
+    game.update();
+
     clear();
     grid.draw();
     ui.draw();
