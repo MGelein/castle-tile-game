@@ -30,6 +30,7 @@ class Game {
     }
 
     nextPlayer() {
+        console.log("NEXT");
         let activePlayerIndex = this.players.indexOf(this.activePlayer);
         activePlayerIndex++;
 

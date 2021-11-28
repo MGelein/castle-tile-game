@@ -22,6 +22,11 @@ class UI {
         const testPanel = new Panel(300);
         this.addComponent(testPanel);
 
+        const testLabel = new Label("Waiting for other players...", 8, (TILE_SIZE / 5) * 2);
+        testLabel.setWidth(300);
+        testLabel.visibleRule = () => !game.hasLocalControl;
+        testPanel.addComponent(testLabel);
+
         const testButton = new Button(PUT_ICON, TILE_SIZE / 2, TILE_SIZE / 3);
         testButton.onClick = () => {
             game.nextPlayer();
@@ -51,12 +56,12 @@ class UI {
         for (let component of this.components.list) {
             if (component.components) {
                 for (let subcomponent of component.components.list) {
-                    if (subcomponent.hover) {
+                    if (subcomponent.hover && subcomponent.visible !== false) {
                         subcomponent.onClick?.();
                         return true;
                     }
                 }
-            } else if (component.hover) {
+            } else if (component.hover && component.visible !== false) {
                 component.onClick?.();
                 return true;
             }
