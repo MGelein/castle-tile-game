@@ -1,8 +1,5 @@
 let sheet;
 
-function preload() {
-}
-
 function setup() {
     pixelDensity(1);
     createCanvas(windowWidth, windowHeight);
@@ -16,11 +13,13 @@ function setup() {
     }
 
     sheet = new Sheet('./data/spritesheet.png', 16);
+    ui = new UI('./data/PressStart2P-Regular.ttf');
 }
 
 function draw() {
     clear();
     grid.draw();
+    ui.draw();
 }
 
 function windowResized() {

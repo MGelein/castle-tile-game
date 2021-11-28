@@ -1,4 +1,4 @@
-const TILE_SIZE = 64;
+const TILE_SIZE = 96;
 const OVERLAY_COLOR = '#eee';
 const DRAW_COORDS = false;
 
