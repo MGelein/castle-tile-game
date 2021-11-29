@@ -11,6 +11,10 @@ class Coord {
         this.y = y;
     }
 
+    setCoord({ x, y }) {
+        this.set(x, y);
+    }
+
     addCoord({ x, y }) {
         this.add(x, y);
     }

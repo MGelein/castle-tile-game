@@ -6,6 +6,7 @@ class Grid {
     targetOffset = new Coord(0, 0);
     offset = new Coord(0, 0);
     offsetMoved = new Coord(0, 0);
+    mouseCoord = new Coord(0, 0);
     lastMoved = null;
 
     minRowVisible = 0;
@@ -21,6 +22,17 @@ class Grid {
         this.calcVisible();
         this.drawOverlay();
         this.drawTiles();
+        this.updateMouseCoord();
+    }
+
+    updateMouseCoord() {
+        this.mouseCoord.setCoord(this.screenToGridCoord(mouseX, mouseY));
+    }
+
+    screenToGridCoord(x, y) {
+        const mx = -this.offset.x + x;
+        const my = -this.offset.y + y;
+        return new Coord(Math.floor(mx / TILE_SIZE), Math.floor(my / TILE_SIZE));
     }
 
     drawTiles() {
@@ -33,6 +45,10 @@ class Grid {
                 const tile = map.get(col, row);
                 if (tile && tile.draw) tile.draw();
                 else if (DRAW_COORDS) text(`(${col};${row})`, 8, 16);
+                if (col === this.mouseCoord.x && row === this.mouseCoord.y) {
+                    noFill();
+                    rect(0, 0, TILE_SIZE, TILE_SIZE);
+                }
                 pop();
             }
         }
