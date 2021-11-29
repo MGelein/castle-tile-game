@@ -45,9 +45,8 @@ class Grid {
                 const tile = map.get(col, row);
                 if (tile && tile.draw) tile.draw();
                 else if (DRAW_COORDS) text(`(${col};${row})`, 8, 16);
-                if (col === this.mouseCoord.x && row === this.mouseCoord.y) {
-                    noFill();
-                    rect(0, 0, TILE_SIZE, TILE_SIZE);
+                if (col === this.mouseCoord.x && row === this.mouseCoord.y && game.isLocalTurn()) {
+                    game.activePlayer.drawGhost();
                 }
                 pop();
             }

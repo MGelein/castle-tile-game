@@ -8,8 +8,10 @@ const TILE_NUMBERS = [
 class Deck {
 
     tiles = [];
+    lastDrawn = -1;
 
     shuffle() {
+        this.lastDrawn = -1;
         this.tiles = [];
         for (let spriteIndex = 0; spriteIndex < TILE_NUMBERS.length; spriteIndex++) {
             const amount = TILE_NUMBERS[spriteIndex];
@@ -25,7 +27,8 @@ class Deck {
 
     randomTile() {
         const randomIndex = Math.floor(random(this.tiles.length));
-        return this.tiles.splice(randomIndex, 1)[0];
+        this.lastDrawn = this.tiles.splice(randomIndex, 1)[0];
+        return this.lastDrawn;
     }
 }
 

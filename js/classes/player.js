@@ -19,4 +19,9 @@ class Player {
     update() {
         this.currentTile?.draw();
     }
+
+    drawGhost() {
+        tint(255, 60);
+        sheet.draw(deck.lastDrawn, 0, 0, TILE_SIZE, TILE_SIZE, this.currentTile.rotation);
+    }
 }

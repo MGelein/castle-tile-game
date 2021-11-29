@@ -1,6 +1,9 @@
 let sheet;
 let clicked = false;
 let clickDebounce = 200;
+let scrolling = false;
+let scrollTimeout = -1;
+let scrollDebounce = 2000;
 
 function setup() {
     pixelDensity(1);
@@ -44,4 +47,21 @@ function touchMoved(e) {
 function touchEnded() {
     grid.stopDrag();
     ui.handleRelease();
+}
+
+function mouseWheel({ delta }) {
+    if (scrollTimeout === -1) {
+        scrollTimeout = setTimeout(() => {
+            console.log("done");
+            scrolling = false;
+            scrollTimeout = -1;
+        }, scrollDebounce);
+    }
+
+    if (scrolling) return;
+    scrolling = true;
+    const hoverTile = game.activePlayer?.currentTile;
+    if (hoverTile) {
+        delta > 0 ? hoverTile.rotateCCW() : hoverTile.rotateCW();
+    }
 }

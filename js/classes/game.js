@@ -21,6 +21,10 @@ class Game {
         if (game.activePlayer) game.activePlayer.update();
     }
 
+    isLocalTurn() {
+        return this.activePlayer === this.localPlayer;
+    }
+
     nextPlayer() {
         if (!deck.hasTiles()) {
             this.state = DONE;
