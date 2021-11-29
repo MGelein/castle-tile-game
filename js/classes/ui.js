@@ -82,7 +82,7 @@ class UI {
 
         const placeButton = new Button(PUT_ICON, TILE_SIZE / 2, TILE_SIZE / 3);
         placeButton.onClick = () => {
-            game.nextPlayer();
+            game.localPlayer.nextState();
         }
         placeButton.visibleRule = () => game.hasLocalControl;
         panel.addComponent(placeButton);

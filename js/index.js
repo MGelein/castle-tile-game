@@ -52,7 +52,6 @@ function touchEnded() {
 function mouseWheel({ delta }) {
     if (scrollTimeout === -1) {
         scrollTimeout = setTimeout(() => {
-            console.log("done");
             scrolling = false;
             scrollTimeout = -1;
         }, scrollDebounce);
