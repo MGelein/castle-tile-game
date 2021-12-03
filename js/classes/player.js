@@ -29,7 +29,9 @@ class Player {
     }
 
     update() {
-        this.currentTile?.draw();
+        if (this.turnState === SEARCHING || this.turnState === PLACING) {
+            this.currentTile?.draw();
+        }
     }
 
     nextState() {

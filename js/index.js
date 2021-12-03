@@ -1,5 +1,3 @@
-let sheet;
-
 function setup() {
     pixelDensity(1);
     createCanvas(windowWidth, windowHeight);

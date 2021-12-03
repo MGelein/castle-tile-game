@@ -23,3 +23,5 @@ class Sheet {
         pop();
     }
 }
+
+let sheet;
