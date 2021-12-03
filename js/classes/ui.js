@@ -38,7 +38,7 @@ class UI {
         }
     }
 
-    handleClick() {
+    handlePress() {
         for (let component of this.components.list) {
             if (component.components) {
                 for (let subcomponent of component.components.list) {

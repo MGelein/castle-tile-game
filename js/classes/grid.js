@@ -7,7 +7,7 @@ class Grid {
     offset = new Coord(0, 0);
     offsetMoved = new Coord(0, 0);
     mouseCoord = new Coord(0, 0);
-    lastMoved = null;
+    startDragCoord = new Coord(0, 0);
 
     minRowVisible = 0;
     rowsVisible = 0;
@@ -110,23 +110,13 @@ class Grid {
         return Math.ceil(windowWidth / TILE_SIZE);
     }
 
-    addMoveEvent(e) {
-        if (this.lastMoved !== null) {
-            const movementX = e.clientX - this.lastMoved.x;
-            const movementY = e.clientY - this.lastMoved.y;
-
-            this.offsetMoved.x += movementX;
-            this.offsetMoved.y += movementY;
-            this.lastMoved.set(e.clientX, e.clientY);
-        }
+    addMoveEvent(dx, dy) {
+        this.offsetMoved.x += dx;
+        this.offsetMoved.y += dy;
     }
 
-    startDrag(e) {
-        this.lastMoved = new Coord(e.clientX, e.clientY);
-    }
-
-    stopDrag() {
-        this.lastMoved = null;
+    startDrag(x, y) {
+        this.startDragCoord = new Coord(x, y);
     }
 }
 

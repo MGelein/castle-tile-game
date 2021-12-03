@@ -1,9 +1,4 @@
 let sheet;
-let clicked = false;
-let clickDebounce = 200;
-let scrolling = false;
-let scrollTimeout = -1;
-let scrollDebounce = 2000;
 
 function setup() {
     pixelDensity(1);
@@ -18,6 +13,12 @@ function setup() {
     playerB = new Player("kers");
     game = new Game(player);
     game.start(player, playerB);
+
+    mouseHandler.on("press", () => ui.handlePress());
+    mouseHandler.on("press", (x, y) => grid.startDrag(x, y));
+    mouseHandler.on("release", () => ui.handleRelease());
+    mouseHandler.on("drag", (dx, dy) => grid.addMoveEvent(dx, dy));
+    mouseHandler.on("click", () => game.activePlayer?.nextState());
 }
 
 function draw() {
@@ -32,35 +33,18 @@ function windowResized() {
     ui.onResize();
 }
 
-function touchStarted(e) {
-    if (!clicked) {
-        clicked = true;
-        if (!ui.handleClick()) grid.startDrag(e.touches?.[0] || e)
-        setTimeout(() => clicked = false, clickDebounce);
-    }
+function touchStarted() {
+    mouseHandler.press();
 }
 
-function touchMoved(e) {
-    grid.addMoveEvent(e.touches?.[0] || e);
+function touchMoved() {
+    mouseHandler.drag();
 }
 
 function touchEnded() {
-    grid.stopDrag();
-    ui.handleRelease();
+    mouseHandler.release();
 }
 
 function mouseWheel({ delta }) {
-    if (scrollTimeout === -1) {
-        scrollTimeout = setTimeout(() => {
-            scrolling = false;
-            scrollTimeout = -1;
-        }, scrollDebounce);
-    }
-
-    if (scrolling) return;
-    scrolling = true;
-    const hoverTile = game.activePlayer?.currentTile;
-    if (hoverTile) {
-        delta > 0 ? hoverTile.rotateCCW() : hoverTile.rotateCW();
-    }
+    mouseHandler.wheel(delta);
 }

@@ -37,8 +37,12 @@ class Player {
             this.turnState = PLACING;
             this.placeCoord.setCoord(grid.mouseCoord);
         } else if (this.turnState === PLACING) {
-            this.turnState = MEEPLES;
-            map.set(this.placeCoord.x, this.placeCoord.y, new Tile(deck.lastDrawn, this.currentTile.rotation));
+            if (grid.mouseCoord.x === this.placeCoord.x && grid.mouseCoord.y === this.placeCoord.y) {
+                this.turnState = MEEPLES;
+                map.set(this.placeCoord.x, this.placeCoord.y, new Tile(deck.lastDrawn, this.currentTile.targetRotation));
+            } else {
+                this.placeCoord.setCoord(grid.mouseCoord);
+            }
         } else if (this.turnState === MEEPLES) {
             this.turnState = WAITING;
             game.nextPlayer();
@@ -48,7 +52,7 @@ class Player {
     drawState() {
         push();
         const { x, y } = this.turnState === SEARCHING ? grid.mouseCoord : this.placeCoord;
-        translate(x * TILE_SIZE, y * TILE_SIZE);
+        translate(x * TILE_SIZE + grid.offset.x, y * TILE_SIZE + grid.offset.y);
 
         if (this.turnState === SEARCHING) this.drawSearch();
         if (this.turnState === PLACING) this.drawPlace();
