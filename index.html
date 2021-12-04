@@ -7,6 +7,7 @@
     <title>Castle Tile Game</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/lib/p5.min.js" defer></script>
+    <script src="js/lib/gun.js" defer></script>
     <script src="js/classes/event.js" defer></script>
     <script src="js/classes/colors.js" defer></script>
     <script src="js/classes/coord.js" defer></script>
@@ -23,10 +24,18 @@
     <script src="js/classes/player.js" defer></script>
     <script src="js/classes/hovertile.js" defer></script>
     <script src="js/classes/managedlist.js" defer></script>
+    <script src="js/classes/server.js" defer></script>
     <script src="js/index.js" defer></script>
 </head>
 
 <body>
+    <div class="div-overlay">
+        <section class='pregame-modal'>
+            <h1>Connected Players</h1>
+            <ul id='playerList'></ul>
+            <button id='startButton' onclick="startGame(event);">Start</button>
+        </section>
+    </div>
 </body>
 
 </html>

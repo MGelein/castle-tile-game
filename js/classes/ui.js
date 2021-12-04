@@ -77,14 +77,14 @@ class UI {
 
         const waitingLabel = new Label("Waiting for other players...", 8, (TILE_SIZE / 5) * 2);
         waitingLabel.setWidth(300);
-        waitingLabel.visibleRule = () => !game.hasLocalControl;
+        waitingLabel.visibleRule = () => !game?.hasLocalControl;
         panel.addComponent(waitingLabel);
 
         const placeButton = new Button(PUT_ICON, TILE_SIZE / 2, TILE_SIZE / 3);
         placeButton.onClick = () => {
             game.localPlayer.nextState();
         }
-        placeButton.visibleRule = () => game.hasLocalControl;
+        placeButton.visibleRule = () => game ? game.hasLocalControl : false;
         panel.addComponent(placeButton);
 
         const rotateCCWButton = new Button(CCW_ICON, TILE_SIZE * 1.5, TILE_SIZE / 3);

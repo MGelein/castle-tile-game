@@ -51,7 +51,7 @@ class Grid {
         }
         pop();
 
-        if (game.isLocalTurn()) game.activePlayer.drawState();
+        if (game?.isLocalTurn?.()) game.activePlayer.drawState();
     }
 
     updateOffset() {
