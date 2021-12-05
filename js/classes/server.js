@@ -10,6 +10,8 @@ class Server {
     createdLobby = false;
     playerNames;
     gameId;
+    game;
+    board;
 
     constructor() {
         const gun = Gun(['https://trb1914-gun.herokuapp.com/gun']);
@@ -35,16 +37,33 @@ class Server {
         }
 
         this.players.on((data) => this.onPlayerListUpdate(JSON.parse(data)));
-        this.lobby.get('gameId').on((data) => this.onGameId(data));
+        this.lobby.get('gameId').on(data => this.onGameId(data));
     }
 
     onGameId(id) {
         if (!id || id.length < 10) return;
+        if (this.playerNames.length < 2) return;
         // We have an ID for the game, now all connect to it
-        alert("your game id is: " + id);
+        console.log('joining game: ', id);
+        this.gameId = this.gameId ?? id;
+        this.game = this.game ?? this.db.get(`game${this.gameId}`);
+        this.board = this.board ?? this.game.get('board');
+
+        this.board.map().on((data) => this.onTile(data));
+
+        document.querySelector('.div-overlay').remove();
+    }
+
+    onTile({ x, y, tile, rotation }) {
+        map.set(x, y, new Tile(tile, rotation));
+    }
+
+    setTile(x, y, tile, rotation) {
+        if (this.board) this.board.set({ x, y, tile, rotation });
     }
 
     onPlayerListUpdate(list) {
+        if (!list) return;
         this.playerNames = list.filter(p => p);
 
         const startButton = document.querySelector('#startButton');
@@ -66,6 +85,7 @@ class Server {
                 uniqueNames.push(name);
             }
         }
+        this.playerNames = [...uniqueNames];
         this.players.put(JSON.stringify(uniqueNames));
     }
 
@@ -78,13 +98,21 @@ class Server {
     }
 }
 
-function findLobby() {
-    const playerName = prompt('Please provide your playername');
-    if (!playerName) window.location.reload();
+// const DEFAULT_ID = '1638736230906-02699196665003689';
+const DEFAULT_ID = false;
 
-    const lobbyName = prompt("Please enter name of lobby you want to connect to:");
-    if (!lobbyName) window.location.reload();
-    server.setLobby(lobbyName, playerName);
+function findLobby() {
+    if (!DEFAULT_ID) {
+        const playerName = prompt('Please provide your playername');
+        if (!playerName) window.location.reload();
+
+        const lobbyName = prompt("Please enter name of lobby you want to connect to:");
+        if (!lobbyName) window.location.reload();
+        server.setLobby(lobbyName, playerName);
+
+    } else {
+        server.onGameId(DEFAULT_ID);
+    }
 }
 
 const server = new Server();
