@@ -8,6 +8,7 @@ class Server {
     players;
     lobby;
     lobbyOwner;
+    lobbyCallback;
     createdLobby = false;
     playerNames;
     gameId;
@@ -17,7 +18,8 @@ class Server {
         this.db = gun.get('trb1914').get('castle-tile-game');
     }
 
-    setLobby(name) {
+    setLobby(name, lobbyCallback) {
+        this.lobbyCallback = lobbyCallback;
         this.playerNames = [];
         this.lobby = this.db.get('lobbies').get(name);
         this.lobby.get('active').once((data) => this.foundLobby(data));
@@ -36,6 +38,7 @@ class Server {
         this.players.on((data) => this.onPlayerListUpdate(JSON.parse(data)));
         this.lobby.get('owner').on((data) => this.lobbyOwner = data);
         this.lobby.get('gameId').on((data) => this.onGameId(data));
+        this.lobbyCallback?.();
     }
 
     onGameId(id) {
@@ -79,6 +82,20 @@ class Server {
         this.lobby.get('gameId').put(this.gameId);
         this.lobby.get('active').put(false);
     }
+}
+
+function findLobby() {
+    const lobbyName = prompt("Please enter name of lobby you want to connect to:");
+    if (!lobbyName) window.location.reload();
+    server.setLobby(lobbyName, createPlayer);
+}
+
+function createPlayer() {
+    const playerName = prompt('Please provide your playername');
+    if (!playerName) window.location.reload();
+    server.addLocalPlayer(playerName);
+
+    if (server.createdLobby) server.setLobbyOwner(playerName);
 }
 
 const server = new Server();

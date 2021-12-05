@@ -2,15 +2,7 @@ function preload() {
     sheet = new Sheet('./data/spritesheet.png', 16);
     ui = new UI('./data/PressStart2P-Regular.ttf');
 
-    const lobbyName = prompt("Please enter name of lobby you want to connect to:");
-    if (!lobbyName) window.location.reload();
-    server.setLobby(lobbyName);
-
-    const playerName = prompt('Please provide your playername');
-    if (!playerName) window.location.reload();
-    server.addLocalPlayer(playerName);
-
-    if (server.createdLobby) server.setLobbyOwner(playerName);
+    findLobby();
 }
 
 function setup() {
