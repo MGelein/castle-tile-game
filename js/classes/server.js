@@ -7,7 +7,6 @@ class Server {
     db;
     players;
     lobby;
-    lobbyOwner;
     createdLobby = false;
     playerNames;
     gameId;
@@ -33,28 +32,23 @@ class Server {
             this.lobby.get('owner').put(this.localName);
             this.lobby.get('gameId').put('');
             this.lobby.get('active').put(true);
-            console.log('Found lobby was not active, taking control...');
         }
 
         this.players.on((data) => this.onPlayerListUpdate(JSON.parse(data)));
-        this.lobby.get('owner').on((data) => this.lobbyOwner = data);
         this.lobby.get('gameId').on((data) => this.onGameId(data));
     }
 
     onGameId(id) {
         if (!id || id.length < 10) return;
         // We have an ID for the game, now all connect to it
+        alert("your game id is: " + id);
     }
 
     onPlayerListUpdate(list) {
         this.playerNames = list.filter(p => p);
 
         const startButton = document.querySelector('#startButton');
-        if (this.localName === this.lobbyOwner) {
-            startButton.className = this.playerNames.length < 2 ? 'disabled' : ''
-        } else {
-            startButton.className = 'hidden';
-        }
+        startButton.className = this.playerNames.length < 2 ? 'disabled' : ''
         const ul = document.querySelector('#playerList');
         const playerItems = this.playerNames.map(name => `<li>${name}</li>`);
         ul.innerHTML = playerItems.join('');
@@ -79,6 +73,8 @@ class Server {
         this.gameId = `${Date.now()}-${Math.random()}`.replace(/[^0-9-]/g, '');
         this.lobby.get('gameId').put(this.gameId);
         this.lobby.get('active').put(false);
+        this.players.put(null);
+        this.lobby.get('owner').put(null);
     }
 }
 
