@@ -8,7 +8,6 @@ class Server {
     players;
     lobby;
     lobbyOwner;
-    lobbyCallback;
     createdLobby = false;
     playerNames;
     gameId;
@@ -18,8 +17,8 @@ class Server {
         this.db = gun.get('trb1914').get('castle-tile-game');
     }
 
-    setLobby(name, lobbyCallback) {
-        this.lobbyCallback = lobbyCallback;
+    setLobby(name, playerName) {
+        this.localName = playerName;
         this.playerNames = [];
         this.lobby = this.db.get('lobbies').get(name);
         this.lobby.get('active').once((data) => this.foundLobby(data));
@@ -27,27 +26,26 @@ class Server {
 
     foundLobby(active) {
         this.players = this.lobby.get('players');
+        this.createdLobby = !active;
+
         if (!active) {
             this.players.put('[]');
-            this.lobby.get('owner').put('');
+            this.lobby.get('owner').put(this.localName);
             this.lobby.get('gameId').put('');
             this.lobby.get('active').put(true);
-            this.createdLobby = true;
+            console.log('Found lobby was not active, taking control...');
         }
 
         this.players.on((data) => this.onPlayerListUpdate(JSON.parse(data)));
         this.lobby.get('owner').on((data) => this.lobbyOwner = data);
         this.lobby.get('gameId').on((data) => this.onGameId(data));
-        this.lobbyCallback?.();
+
+        this.addLocalPlayer();
     }
 
     onGameId(id) {
         if (!id || id.length < 10) return;
         // We have an ID for the game, now all connect to it
-    }
-
-    setLobbyOwner(name) {
-        this.lobby.get('owner').put(name);
     }
 
     onPlayerListUpdate(list) {
@@ -64,8 +62,8 @@ class Server {
         ul.innerHTML = playerItems.join('');
     }
 
-    addLocalPlayer(name) {
-        this.localName = name;
+    addLocalPlayer() {
+        const name = this.localName;
         if (this.playerNames.indexOf(name) > -1) return false;
 
         const uniqueNames = [name];
@@ -85,17 +83,12 @@ class Server {
 }
 
 function findLobby() {
-    const lobbyName = prompt("Please enter name of lobby you want to connect to:");
-    if (!lobbyName) window.location.reload();
-    server.setLobby(lobbyName, createPlayer);
-}
-
-function createPlayer() {
     const playerName = prompt('Please provide your playername');
     if (!playerName) window.location.reload();
-    server.addLocalPlayer(playerName);
 
-    if (server.createdLobby) server.setLobbyOwner(playerName);
+    const lobbyName = prompt("Please enter name of lobby you want to connect to:");
+    if (!lobbyName) window.location.reload();
+    server.setLobby(lobbyName, playerName);
 }
 
 const server = new Server();
