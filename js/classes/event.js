@@ -77,7 +77,7 @@ class MouseHandler {
 
         if (this.scrolling) return;
         this.scrolling = true;
-        const hoverTile = game.activePlayer?.currentTile;
+        const hoverTile = game?.activePlayer?.currentTile;
         delta > 0 ? hoverTile?.rotateCCW() : hoverTile?.rotateCW();
     }
 

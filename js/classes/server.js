@@ -42,7 +42,7 @@ class Server {
 
     onGameId(id) {
         if (!id || id.length < 10) return;
-        if (this.playerNames.length < 2) return;
+        if (this.playerNames && this.playerNames.length < 2) return;
         // We have an ID for the game, now all connect to it
         console.log('joining game: ', id);
         this.gameId = this.gameId ?? id;
@@ -50,8 +50,13 @@ class Server {
         this.board = this.board ?? this.game.get('board');
 
         this.board.map().on((data) => this.onTile(data));
+        this.game.get('activePlayer').on(data => this.onActivePlayer(data));
 
         document.querySelector('.div-overlay').remove();
+
+        const players = this.playerNames.map((name) => new Player(name));
+        game = new Game(players.find(p => p.name === this.localName));
+        game.start(...players);
     }
 
     onTile({ x, y, tile, rotation }) {
@@ -60,6 +65,14 @@ class Server {
 
     setTile(x, y, tile, rotation) {
         if (this.board) this.board.set({ x, y, tile, rotation });
+    }
+
+    onActivePlayer(name) {
+        game.setActivePlayer(name);
+    }
+
+    setActivePlayer(name) {
+        this.game.get('activePlayer').put(name);
     }
 
     onPlayerListUpdate(list) {

@@ -3,6 +3,7 @@ class Map {
 
     set(col, row, tile) {
         this.data[`c${col}r${row}`] = tile;
+        server.setTile(col, row, tile.tile, tile.rotation);
     }
 
     get(col, row) {

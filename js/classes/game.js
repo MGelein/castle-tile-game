@@ -25,6 +25,14 @@ class Game {
         return this.activePlayer === this.localPlayer;
     }
 
+    setActivePlayer(name) {
+        if (this.activePlayer.name === name) return;
+        const player = this.players.find(p => p.name === name);
+        this.activePlayer = player;
+        this.hasLocalControl = this.activePlayer === this.localPlayer;
+        if (this.hasLocalControl) this.activePlayer.drawTile();
+    }
+
     nextPlayer() {
         if (!deck.hasTiles()) {
             this.state = DONE;
@@ -42,6 +50,7 @@ class Game {
         }
 
         this.activePlayer = this.players[activePlayerIndex];
+        server.setActivePlayer(this.activePlayer.name);
         this.hasLocalControl = this.activePlayer === this.localPlayer;
         if (this.hasLocalControl) this.activePlayer.drawTile();
     }
@@ -56,6 +65,7 @@ class Game {
         this.activePlayer = this.players[0];
         this.hasLocalControl = this.activePlayer === this.localPlayer;
         if (this.hasLocalControl) this.activePlayer.drawTile();
+        server.setActivePlayer(this.activePlayer.name);
     }
 }
 
