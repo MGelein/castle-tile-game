@@ -8,6 +8,7 @@ class Server {
     players;
     lobby;
     lobbyOwner;
+    createdLobby = false;
     playerNames;
     gameId;
 
@@ -16,14 +17,20 @@ class Server {
         this.db = gun.get('trb1914').get('castle-tile-game');
     }
 
-    setLobby(name, action) {
+    setLobby(name) {
         this.playerNames = [];
         this.lobby = this.db.get('lobbies').get(name);
+        this.lobby.get('active').once((data) => this.foundLobby(data));
+    }
+
+    foundLobby(active) {
         this.players = this.lobby.get('players');
-        if (action === CREATE) {
+        if (!active) {
             this.players.put('[]');
             this.lobby.get('owner').put('');
             this.lobby.get('gameId').put('');
+            this.lobby.get('active').put(true);
+            this.createdLobby = true;
         }
 
         this.players.on((data) => this.onPlayerListUpdate(JSON.parse(data)));
@@ -70,6 +77,7 @@ class Server {
     createGame() {
         this.gameId = `${Date.now()}-${Math.random()}`.replace(/[^0-9-]/g, '');
         this.lobby.get('gameId').put(this.gameId);
+        this.lobby.get('active').put(false);
     }
 }
 
