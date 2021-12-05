@@ -28,7 +28,7 @@ class Server {
         this.players = this.lobby.get('players');
         this.createdLobby = !active;
 
-        if (!active) {
+        if (this.createdLobby) {
             this.players.put('[]');
             this.lobby.get('owner').put(this.localName);
             this.lobby.get('gameId').put('');
@@ -39,8 +39,6 @@ class Server {
         this.players.on((data) => this.onPlayerListUpdate(JSON.parse(data)));
         this.lobby.get('owner').on((data) => this.lobbyOwner = data);
         this.lobby.get('gameId').on((data) => this.onGameId(data));
-
-        this.addLocalPlayer();
     }
 
     onGameId(id) {
@@ -60,6 +58,8 @@ class Server {
         const ul = document.querySelector('#playerList');
         const playerItems = this.playerNames.map(name => `<li>${name}</li>`);
         ul.innerHTML = playerItems.join('');
+
+        if (this.playerNames.indexOf(this.localName) < 0) this.addLocalPlayer();
     }
 
     addLocalPlayer() {
